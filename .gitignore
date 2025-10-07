@@ -21,4 +21,4 @@ ENV/
 Thumbs.db
 
 # Raw data
-data/raw/
+dataset/raw/
