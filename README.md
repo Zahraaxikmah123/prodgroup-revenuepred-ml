@@ -111,23 +111,24 @@ This project provides an end-to-end pipeline for grouping products based on sale
 - POST /predict_all?group_model=kmeans&rev_model=xgboost
   - Body: combine required fields from both endpoints (see `/predict_all` docstring in `app.py`).
 
-## Where results are
-- models/                → load these for inference
-- clustering_results/    → visual cluster plots
-- regression_results/    → metrics & actual vs predicted plots
-- dataset/processed/     → product-level, aggregated datasets
-
-## Troubleshooting
-- If you get errors about missing model files, ensure `models/` contains the following filenames used by `app.py`:
-- `kmeans_model.joblib`, `dbscan_model.joblib`, `random_forest_regressor.joblib`, `xgboost_regressor.joblib`, `clustering_scaler.pkl`, `regression_scaler.pkl`.
-- Do not use the hard-coded `app.secret_key` in production. Replace with an environment-provided secret.
-
 ## Notes
-- Ensure model files in `models/` match names used in `app.py` and `utils.py`.
-- For local UI fetch requests during development you can disable CSRF (not recommended for production):
   ```python
   app.config['WTF_CSRF_ENABLED'] = False
   ```
+
+## Testing
+
+- `tests/` contains lightweight unit and integration tests used during development:
+  - unit tests for `signed_log1p` / `signed_expm1` and preprocessing helpers
+  - a small integration test that posts to `/predict_all` using the Flask test client
+  Run them with:
+  ```bash
+  pytest
+  ```
+
+## Notes on log transforms
+
+- The regression models in `models/` were trained using a sign-preserving log transform on revenue features and (for deployed models) on the target. The code applies `signed_log1p` to revenue inputs and uses `signed_expm1` to invert model outputs so the API returns revenue in the original scale. Keep `regression_scaler.pkl` and model filenames consistent with `app.py` and `utils.py`.
 
 That's it — simple structure, quick run, and UI at /ui for manual testing. ✅
 
