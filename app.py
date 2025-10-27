@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_cors import CORS
 import joblib
 import os
@@ -22,6 +22,13 @@ MODELS = {
 
 @app.route("/", methods=["GET"])
 def home():
+    # Redirect root URL to the UI. Keep the API description available at /api
+    return redirect(url_for('ui_predict'))
+
+
+@app.route("/api", methods=["GET"])
+def api_info():
+    """Return the API info/description (previously served at /)."""
     return jsonify({
         "message": "Product Group & Revenue Prediction API is running.",
         "endpoints": {

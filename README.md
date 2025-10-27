@@ -10,7 +10,7 @@ This project provides an end-to-end pipeline for grouping products based on sale
 - **Modular Codebase:** Clean separation of data processing, modeling, and API logic.
 - **Documentation:** Workflow and business interpretation included.
 
-## 📁 Repo structure (as in your workspace)
+## 📁 Project structure
 
 ```
 .
