@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 import joblib
+import os
 from forms import ProductPredictForm
 from utils import prepare_features_from_json, prepare_regression_features_from_json, signed_expm1
 from business_interpretation import KMEANS_BUSINESS, DBSCAN_BUSINESS
@@ -198,4 +199,5 @@ def ui_predict():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=7000)
+    port = int(os.environ.get("PORT", 7000))
+    app.run(host="0.0.0.0", port=port)
